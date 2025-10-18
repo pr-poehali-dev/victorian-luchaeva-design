@@ -2,12 +2,20 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
 import Icon from '@/components/ui/icon';
 
 const Index = () => {
   const [activeSection, setActiveSection] = useState('home');
   const [selectedImage, setSelectedImage] = useState<number | null>(null);
   const [cart, setCart] = useState<{[key: string]: number}>({});
+  const [contactForm, setContactForm] = useState({
+    name: '',
+    email: '',
+    subject: '',
+    message: ''
+  });
 
   const books = [
     {
@@ -761,6 +769,193 @@ const Index = () => {
                 </Button>
               </CardContent>
             </Card>
+          </div>
+        </div>
+      </section>
+
+      <section className="py-16 bg-gradient-to-b from-card/20 to-background">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h3 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+              Контакты
+            </h3>
+            <Separator className="w-24 mx-auto bg-primary" />
+            <p className="text-muted-foreground mt-4 max-w-2xl mx-auto">
+              Свяжитесь со мной для сотрудничества, интервью или приглашений на мероприятия
+            </p>
+          </div>
+
+          <div className="max-w-6xl mx-auto">
+            <div className="grid lg:grid-cols-2 gap-8">
+              <div>
+                <Card className="border-2 border-primary/20">
+                  <CardContent className="p-8">
+                    <h4 className="text-2xl font-bold text-foreground mb-6">Напишите мне</h4>
+                    
+                    <form className="space-y-4" onSubmit={(e) => { e.preventDefault(); }}>
+                      <div>
+                        <label className="text-sm font-semibold text-foreground mb-2 block">
+                          Ваше имя
+                        </label>
+                        <Input 
+                          placeholder="Введите ваше имя"
+                          value={contactForm.name}
+                          onChange={(e) => setContactForm({...contactForm, name: e.target.value})}
+                        />
+                      </div>
+
+                      <div>
+                        <label className="text-sm font-semibold text-foreground mb-2 block">
+                          Email
+                        </label>
+                        <Input 
+                          type="email"
+                          placeholder="your@email.com"
+                          value={contactForm.email}
+                          onChange={(e) => setContactForm({...contactForm, email: e.target.value})}
+                        />
+                      </div>
+
+                      <div>
+                        <label className="text-sm font-semibold text-foreground mb-2 block">
+                          Тема сообщения
+                        </label>
+                        <Input 
+                          placeholder="О чём вы хотите написать?"
+                          value={contactForm.subject}
+                          onChange={(e) => setContactForm({...contactForm, subject: e.target.value})}
+                        />
+                      </div>
+
+                      <div>
+                        <label className="text-sm font-semibold text-foreground mb-2 block">
+                          Сообщение
+                        </label>
+                        <Textarea 
+                          placeholder="Ваше сообщение..."
+                          rows={6}
+                          value={contactForm.message}
+                          onChange={(e) => setContactForm({...contactForm, message: e.target.value})}
+                        />
+                      </div>
+
+                      <Button className="w-full" size="lg">
+                        <Icon name="Send" className="w-5 h-5 mr-2" />
+                        Отправить сообщение
+                      </Button>
+                    </form>
+                  </CardContent>
+                </Card>
+              </div>
+
+              <div className="space-y-6">
+                <Card className="border-l-4 border-l-primary">
+                  <CardContent className="p-6">
+                    <div className="flex items-start gap-4">
+                      <div className="bg-primary/10 p-3 rounded-lg">
+                        <Icon name="Mail" className="w-6 h-6 text-primary" />
+                      </div>
+                      <div className="flex-1">
+                        <h5 className="font-semibold text-foreground mb-1">Email</h5>
+                        <a 
+                          href="mailto:info@luchaeva.ru" 
+                          className="text-muted-foreground hover:text-primary transition-colors"
+                        >
+                          info@luchaeva.ru
+                        </a>
+                        <p className="text-xs text-muted-foreground mt-1">
+                          Отвечаю в течение 24 часов
+                        </p>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card className="border-l-4 border-l-secondary">
+                  <CardContent className="p-6">
+                    <div className="flex items-start gap-4">
+                      <div className="bg-secondary/10 p-3 rounded-lg">
+                        <Icon name="MapPin" className="w-6 h-6 text-secondary" />
+                      </div>
+                      <div className="flex-1">
+                        <h5 className="font-semibold text-foreground mb-1">Адрес</h5>
+                        <p className="text-muted-foreground">
+                          Санкт-Петербург, Россия
+                        </p>
+                        <p className="text-xs text-muted-foreground mt-1">
+                          Для личных встреч — по предварительной договорённости
+                        </p>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card className="border-l-4 border-l-accent">
+                  <CardContent className="p-6">
+                    <div className="flex items-start gap-4">
+                      <div className="bg-accent/10 p-3 rounded-lg">
+                        <Icon name="Phone" className="w-6 h-6 text-accent" />
+                      </div>
+                      <div className="flex-1">
+                        <h5 className="font-semibold text-foreground mb-1">Телефон</h5>
+                        <p className="text-muted-foreground">
+                          +7 (812) 123-45-67
+                        </p>
+                        <p className="text-xs text-muted-foreground mt-1">
+                          Пн-Пт: 10:00 - 18:00
+                        </p>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card className="border-2 border-primary/20 bg-gradient-to-br from-primary/5 to-transparent">
+                  <CardContent className="p-6">
+                    <h5 className="font-semibold text-foreground mb-3">Социальные сети</h5>
+                    <div className="flex gap-3">
+                      <Button size="icon" variant="outline" className="hover:bg-primary hover:text-primary-foreground">
+                        <Icon name="Facebook" className="w-5 h-5" />
+                      </Button>
+                      <Button size="icon" variant="outline" className="hover:bg-primary hover:text-primary-foreground">
+                        <Icon name="Instagram" className="w-5 h-5" />
+                      </Button>
+                      <Button size="icon" variant="outline" className="hover:bg-primary hover:text-primary-foreground">
+                        <Icon name="Twitter" className="w-5 h-5" />
+                      </Button>
+                      <Button size="icon" variant="outline" className="hover:bg-primary hover:text-primary-foreground">
+                        <Icon name="Youtube" className="w-5 h-5" />
+                      </Button>
+                    </div>
+                    <p className="text-xs text-muted-foreground mt-4">
+                      Следите за новостями о новых книгах и мероприятиях
+                    </p>
+                  </CardContent>
+                </Card>
+
+                <Card className="border-2 border-accent/30 bg-accent/5">
+                  <CardContent className="p-6">
+                    <div className="flex items-start gap-3">
+                      <Icon name="Briefcase" className="w-6 h-6 text-accent flex-shrink-0" />
+                      <div>
+                        <h5 className="font-semibold text-foreground mb-2">
+                          Для деловых предложений
+                        </h5>
+                        <p className="text-sm text-muted-foreground mb-3">
+                          Издательства, литературные агенты, организаторы мероприятий — 
+                          пишите на деловую почту:
+                        </p>
+                        <a 
+                          href="mailto:business@luchaeva.ru"
+                          className="text-accent font-semibold hover:underline"
+                        >
+                          business@luchaeva.ru
+                        </a>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            </div>
           </div>
         </div>
       </section>
