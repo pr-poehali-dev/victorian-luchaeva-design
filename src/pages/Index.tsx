@@ -195,6 +195,21 @@ const Index = () => {
     { id: 'contacts', label: 'Контакты', icon: 'Mail' }
   ];
 
+  const scrollToSection = (sectionId: string) => {
+    setActiveSection(sectionId);
+    const element = document.getElementById(sectionId);
+    if (element) {
+      const headerOffset = 100;
+      const elementPosition = element.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+      
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+      });
+    }
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <header className="border-b border-primary/20 bg-card/50 backdrop-blur-sm sticky top-0 z-50">
@@ -213,7 +228,7 @@ const Index = () => {
                 variant="default" 
                 size="sm"
                 className="relative"
-                onClick={() => setActiveSection('shop')}
+                onClick={() => scrollToSection('shop')}
               >
                 <Icon name="ShoppingCart" className="w-4 h-4 mr-2" />
                 Корзина
@@ -230,7 +245,7 @@ const Index = () => {
                 key={item.id}
                 variant={activeSection === item.id ? 'default' : 'ghost'}
                 size="sm"
-                onClick={() => setActiveSection(item.id)}
+                onClick={() => scrollToSection(item.id)}
                 className="text-xs md:text-sm"
               >
                 <Icon name={item.icon as any} className="w-4 h-4 mr-1" />
@@ -241,7 +256,7 @@ const Index = () => {
         </div>
       </header>
 
-      <section className="relative py-20 md:py-32 vintage-pattern">
+      <section id="home" className="relative py-20 md:py-32 vintage-pattern">
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/50 to-background"></div>
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-4xl mx-auto text-center">
@@ -256,11 +271,11 @@ const Index = () => {
               со шпионскими интригами, а каждая страница открывает новую загадку прошлого.
             </p>
             <div className="mt-10 flex flex-wrap gap-4 justify-center">
-              <Button size="lg" className="text-base">
+              <Button size="lg" className="text-base" onClick={() => scrollToSection('works')}>
                 <Icon name="BookOpen" className="w-5 h-5 mr-2" />
                 Читать произведения
               </Button>
-              <Button size="lg" variant="outline" className="text-base">
+              <Button size="lg" variant="outline" className="text-base" onClick={() => scrollToSection('shop')}>
                 <Icon name="ShoppingBag" className="w-5 h-5 mr-2" />
                 Купить книги
               </Button>
@@ -269,7 +284,7 @@ const Index = () => {
         </div>
       </section>
 
-      <section className="py-16 bg-card/30">
+      <section id="works" className="py-16 bg-card/30">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h3 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
@@ -323,7 +338,7 @@ const Index = () => {
         </div>
       </section>
 
-      <section className="py-16 vintage-pattern">
+      <section id="quotes" className="py-16 vintage-pattern">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h3 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
@@ -357,7 +372,7 @@ const Index = () => {
         </div>
       </section>
 
-      <section className="py-16 bg-card/20">
+      <section id="gallery" className="py-16 bg-card/20">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h3 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
@@ -455,7 +470,7 @@ const Index = () => {
         </div>
       )}
 
-      <section className="py-16 bg-secondary/5">
+      <section id="bio" className="py-16 bg-secondary/5">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-12">
@@ -498,7 +513,7 @@ const Index = () => {
         </div>
       </section>
 
-      <section className="py-16 bg-gradient-to-b from-background to-card/30">
+      <section id="shop" className="py-16 bg-gradient-to-b from-background to-card/30">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h3 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
@@ -665,7 +680,7 @@ const Index = () => {
         </div>
       </section>
 
-      <section className="py-16 bg-card/20 vintage-pattern">
+      <section id="events" className="py-16 bg-card/20 vintage-pattern">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h3 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
@@ -773,7 +788,7 @@ const Index = () => {
         </div>
       </section>
 
-      <section className="py-16 bg-gradient-to-b from-card/20 to-background">
+      <section id="contacts" className="py-16 bg-gradient-to-b from-card/20 to-background">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h3 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
