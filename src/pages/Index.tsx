@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
@@ -210,6 +210,28 @@ const Index = () => {
     }
   };
 
+  useEffect(() => {
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -100px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('animate-in');
+        }
+      });
+    }, observerOptions);
+
+    const animatedElements = document.querySelectorAll('.fade-in-section');
+    animatedElements.forEach((el) => observer.observe(el));
+
+    return () => {
+      animatedElements.forEach((el) => observer.unobserve(el));
+    };
+  }, []);
+
   return (
     <div className="min-h-screen bg-background">
       <header className="border-b border-primary/20 bg-card/50 backdrop-blur-sm sticky top-0 z-50">
@@ -286,14 +308,14 @@ const Index = () => {
 
       <section id="works" className="py-16 bg-card/30">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
+          <div className="text-center mb-12 fade-in-section">
             <h3 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
               Избранные произведения
             </h3>
             <Separator className="w-24 mx-auto bg-primary" />
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+          <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto fade-in-section">
             {books.map((book, index) => (
               <Card 
                 key={index} 
@@ -340,14 +362,14 @@ const Index = () => {
 
       <section id="quotes" className="py-16 vintage-pattern">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
+          <div className="text-center mb-12 fade-in-section">
             <h3 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
               Избранные цитаты
             </h3>
             <Separator className="w-24 mx-auto bg-secondary" />
           </div>
 
-          <div className="max-w-4xl mx-auto space-y-8">
+          <div className="max-w-4xl mx-auto space-y-8 fade-in-section">
             {quotes.map((quote, index) => (
               <Card 
                 key={index} 
@@ -374,7 +396,7 @@ const Index = () => {
 
       <section id="gallery" className="py-16 bg-card/20">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
+          <div className="text-center mb-12 fade-in-section">
             <h3 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
               Галерея путешествий
             </h3>
@@ -384,7 +406,7 @@ const Index = () => {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto fade-in-section">
             {galleryImages.map((image, index) => (
               <Card 
                 key={index}
@@ -473,14 +495,14 @@ const Index = () => {
       <section id="bio" className="py-16 bg-secondary/5">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
-            <div className="text-center mb-12">
+            <div className="text-center mb-12 fade-in-section">
               <h3 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
                 О писательнице
               </h3>
               <Separator className="w-24 mx-auto bg-primary" />
             </div>
 
-            <div className="grid md:grid-cols-3 gap-8">
+            <div className="grid md:grid-cols-3 gap-8 fade-in-section">
               <div className="md:col-span-1">
                 <div className="aspect-[3/4] rounded-lg shadow-xl overflow-hidden">
                   <img 
@@ -515,7 +537,7 @@ const Index = () => {
 
       <section id="shop" className="py-16 bg-gradient-to-b from-background to-card/30">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
+          <div className="text-center mb-12 fade-in-section">
             <h3 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
               Интернет-магазин
             </h3>
@@ -525,7 +547,7 @@ const Index = () => {
             </p>
           </div>
 
-          <div className="max-w-6xl mx-auto">
+          <div className="max-w-6xl mx-auto fade-in-section">
             <div className="grid lg:grid-cols-3 gap-8">
               <div className="lg:col-span-2">
                 <div className="grid md:grid-cols-2 gap-6">
@@ -682,7 +704,7 @@ const Index = () => {
 
       <section id="events" className="py-16 bg-card/20 vintage-pattern">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
+          <div className="text-center mb-12 fade-in-section">
             <h3 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
               Встречи с читателями
             </h3>
@@ -692,7 +714,7 @@ const Index = () => {
             </p>
           </div>
 
-          <div className="max-w-6xl mx-auto">
+          <div className="max-w-6xl mx-auto fade-in-section">
             <div className="grid md:grid-cols-2 gap-6">
               {events.map((event) => (
                 <Card 
@@ -790,7 +812,7 @@ const Index = () => {
 
       <section id="contacts" className="py-16 bg-gradient-to-b from-card/20 to-background">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
+          <div className="text-center mb-12 fade-in-section">
             <h3 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
               Контакты
             </h3>
@@ -800,7 +822,7 @@ const Index = () => {
             </p>
           </div>
 
-          <div className="max-w-6xl mx-auto">
+          <div className="max-w-6xl mx-auto fade-in-section">
             <div className="grid lg:grid-cols-2 gap-8">
               <div>
                 <Card className="border-2 border-primary/20">
