@@ -6,6 +6,7 @@ import Icon from '@/components/ui/icon';
 
 const Index = () => {
   const [activeSection, setActiveSection] = useState('home');
+  const [selectedImage, setSelectedImage] = useState<number | null>(null);
 
   const books = [
     {
@@ -40,6 +41,45 @@ const Index = () => {
     {
       text: 'Венеция хранит секреты веков в своих туманных каналах.',
       source: 'Венецианская интрига'
+    }
+  ];
+
+  const galleryImages = [
+    {
+      url: 'https://cdn.poehali.dev/projects/862732c7-61b8-4ff3-8625-66b6b6449afa/files/21c81439-5db4-406b-bb09-2be1b2c90df4.jpg',
+      city: 'Лондон',
+      country: 'Англия',
+      description: 'Туманный вечер у Вестминстера. Здесь родилась идея «Шпиона её Величества».'
+    },
+    {
+      url: 'https://cdn.poehali.dev/projects/862732c7-61b8-4ff3-8625-66b6b6449afa/files/3c5065f4-e65f-484b-9a62-ff968f397fa9.jpg',
+      city: 'Венеция',
+      country: 'Италия',
+      description: 'Каналы и тайны старой Венеции — вдохновение для «Венецианской интриги».'
+    },
+    {
+      url: 'https://cdn.poehali.dev/projects/862732c7-61b8-4ff3-8625-66b6b6449afa/files/17f70adc-11ca-43c2-9e3f-bb014eeced08.jpg',
+      city: 'Париж',
+      country: 'Франция',
+      description: 'Эйфелева башня эпохи Belle Époque. Париж всегда хранит свои секреты.'
+    },
+    {
+      url: 'https://cdn.poehali.dev/projects/862732c7-61b8-4ff3-8625-66b6b6449afa/files/c354f6d6-e0b9-4f32-b217-ad9460b5ed6c.jpg',
+      city: 'Прага',
+      country: 'Чехия',
+      description: 'Старый город Праги — место, где история оживает на каждом шагу.'
+    },
+    {
+      url: 'https://cdn.poehali.dev/projects/862732c7-61b8-4ff3-8625-66b6b6449afa/files/fa34b277-f4ea-4e82-b6c5-e7ebd4b5ea16.jpg',
+      city: 'Вена',
+      country: 'Австрия',
+      description: 'Императорские дворцы Вены хранят тайны монархов и придворных интриг.'
+    },
+    {
+      url: 'https://cdn.poehali.dev/projects/862732c7-61b8-4ff3-8625-66b6b6449afa/files/7f716926-7051-4dc3-83af-42c187147b19.jpg',
+      city: 'Эдинбург',
+      country: 'Шотландия',
+      description: 'Величественный замок на скале — символ шотландской истории и легенд.'
     }
   ];
 
@@ -185,6 +225,104 @@ const Index = () => {
           </div>
         </div>
       </section>
+
+      <section className="py-16 bg-card/20">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h3 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+              Галерея путешествий
+            </h3>
+            <Separator className="w-24 mx-auto bg-accent" />
+            <p className="text-muted-foreground mt-4 max-w-2xl mx-auto">
+              Города, которые вдохновили на создание романов
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
+            {galleryImages.map((image, index) => (
+              <Card 
+                key={index}
+                className="overflow-hidden cursor-pointer group hover:shadow-2xl transition-all duration-300 border-primary/10"
+                onClick={() => setSelectedImage(index)}
+              >
+                <div className="relative aspect-[4/3] overflow-hidden">
+                  <img 
+                    src={image.url}
+                    alt={image.city}
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent opacity-80 group-hover:opacity-100 transition-opacity">
+                    <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
+                      <h4 className="text-2xl font-bold mb-1">{image.city}</h4>
+                      <p className="text-sm text-white/80 mb-2">{image.country}</p>
+                    </div>
+                  </div>
+                </div>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {selectedImage !== null && (
+        <div 
+          className="fixed inset-0 bg-black/95 z-50 flex items-center justify-center p-4"
+          onClick={() => setSelectedImage(null)}
+        >
+          <Button
+            size="icon"
+            variant="ghost"
+            className="absolute top-4 right-4 text-white hover:bg-white/20"
+            onClick={() => setSelectedImage(null)}
+          >
+            <Icon name="X" className="w-6 h-6" />
+          </Button>
+
+          <div className="max-w-6xl w-full" onClick={(e) => e.stopPropagation()}>
+            <div className="grid lg:grid-cols-2 gap-8 items-center">
+              <div className="relative aspect-[4/3] rounded-lg overflow-hidden">
+                <img 
+                  src={galleryImages[selectedImage].url}
+                  alt={galleryImages[selectedImage].city}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              
+              <div className="text-white space-y-4 p-6">
+                <div>
+                  <h3 className="text-4xl font-bold mb-2">{galleryImages[selectedImage].city}</h3>
+                  <p className="text-xl text-white/70">{galleryImages[selectedImage].country}</p>
+                </div>
+                <Separator className="bg-white/20" />
+                <p className="text-lg leading-relaxed text-white/90">
+                  {galleryImages[selectedImage].description}
+                </p>
+                
+                <div className="flex gap-4 pt-4">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="bg-white/10 hover:bg-white/20 text-white border-white/30"
+                    onClick={() => setSelectedImage(selectedImage > 0 ? selectedImage - 1 : galleryImages.length - 1)}
+                  >
+                    <Icon name="ChevronLeft" className="w-4 h-4 mr-1" />
+                    Назад
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="bg-white/10 hover:bg-white/20 text-white border-white/30"
+                    onClick={() => setSelectedImage(selectedImage < galleryImages.length - 1 ? selectedImage + 1 : 0)}
+                  >
+                    Далее
+                    <Icon name="ChevronRight" className="w-4 h-4 ml-1" />
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       <section className="py-16 bg-secondary/5">
         <div className="container mx-auto px-4">
