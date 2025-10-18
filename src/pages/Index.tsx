@@ -7,27 +7,70 @@ import Icon from '@/components/ui/icon';
 const Index = () => {
   const [activeSection, setActiveSection] = useState('home');
   const [selectedImage, setSelectedImage] = useState<number | null>(null);
+  const [cart, setCart] = useState<{[key: string]: number}>({});
 
   const books = [
     {
+      id: 'bukingham',
       title: 'Тайны Букингемского дворца',
       year: '2023',
       genre: 'Исторический детектив',
-      image: 'https://cdn.poehali.dev/projects/862732c7-61b8-4ff3-8625-66b6b6449afa/files/485dbba2-faa0-4df9-87dc-ae018595ee70.jpg'
+      image: 'https://cdn.poehali.dev/projects/862732c7-61b8-4ff3-8625-66b6b6449afa/files/485dbba2-faa0-4df9-87dc-ae018595ee70.jpg',
+      price: 890,
+      pages: 456,
+      description: 'Захватывающий исторический детектив о тайнах королевского двора'
     },
     {
+      id: 'spy',
       title: 'Шпион её Величества',
       year: '2022',
       genre: 'Шпионский роман',
-      image: 'https://cdn.poehali.dev/projects/862732c7-61b8-4ff3-8625-66b6b6449afa/files/485dbba2-faa0-4df9-87dc-ae018595ee70.jpg'
+      image: 'https://cdn.poehali.dev/projects/862732c7-61b8-4ff3-8625-66b6b6449afa/files/485dbba2-faa0-4df9-87dc-ae018595ee70.jpg',
+      price: 850,
+      pages: 398,
+      description: 'Шпионский роман в духе классических произведений XIX века'
     },
     {
+      id: 'venice',
       title: 'Венецианская интрига',
       year: '2021',
       genre: 'Приключенческий роман',
-      image: 'https://cdn.poehali.dev/projects/862732c7-61b8-4ff3-8625-66b6b6449afa/files/485dbba2-faa0-4df9-87dc-ae018595ee70.jpg'
+      image: 'https://cdn.poehali.dev/projects/862732c7-61b8-4ff3-8625-66b6b6449afa/files/485dbba2-faa0-4df9-87dc-ae018595ee70.jpg',
+      price: 820,
+      pages: 412,
+      description: 'Приключения и интриги на узких улочках загадочной Венеции'
     }
   ];
+
+  const addToCart = (bookId: string) => {
+    setCart(prev => ({
+      ...prev,
+      [bookId]: (prev[bookId] || 0) + 1
+    }));
+  };
+
+  const removeFromCart = (bookId: string) => {
+    setCart(prev => {
+      const newCart = { ...prev };
+      if (newCart[bookId] > 1) {
+        newCart[bookId]--;
+      } else {
+        delete newCart[bookId];
+      }
+      return newCart;
+    });
+  };
+
+  const getTotalPrice = () => {
+    return Object.entries(cart).reduce((total, [bookId, quantity]) => {
+      const book = books.find(b => b.id === bookId);
+      return total + (book?.price || 0) * quantity;
+    }, 0);
+  };
+
+  const getTotalItems = () => {
+    return Object.values(cart).reduce((sum, qty) => sum + qty, 0);
+  };
 
   const quotes = [
     {
@@ -106,6 +149,20 @@ const Index = () => {
                 ПИСАТЕЛЬНИЦА • ПОЭТЕССА
               </p>
             </div>
+            {getTotalItems() > 0 && (
+              <Button 
+                variant="default" 
+                size="sm"
+                className="relative"
+                onClick={() => setActiveSection('shop')}
+              >
+                <Icon name="ShoppingCart" className="w-4 h-4 mr-2" />
+                Корзина
+                <span className="ml-2 bg-accent text-accent-foreground rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold">
+                  {getTotalItems()}
+                </span>
+              </Button>
+            )}
           </div>
           
           <nav className="mt-6 flex flex-wrap justify-center gap-2 md:gap-4">
@@ -180,11 +237,26 @@ const Index = () => {
                 </div>
                 <CardContent className="p-6">
                   <p className="text-sm text-muted-foreground mb-2">{book.genre}</p>
-                  <p className="text-xs text-accent font-semibold">{book.year}</p>
-                  <Button variant="outline" className="w-full mt-4" size="sm">
-                    <Icon name="BookMarked" className="w-4 h-4 mr-2" />
-                    Подробнее
-                  </Button>
+                  <p className="text-xs text-accent font-semibold mb-1">{book.year}</p>
+                  <div className="flex items-baseline gap-2 mb-4">
+                    <span className="text-2xl font-bold text-primary">{book.price} ₽</span>
+                    <span className="text-xs text-muted-foreground">{book.pages} стр.</span>
+                  </div>
+                  <div className="flex gap-2">
+                    <Button variant="outline" className="flex-1" size="sm">
+                      <Icon name="BookMarked" className="w-4 h-4 mr-2" />
+                      Подробнее
+                    </Button>
+                    <Button 
+                      variant="default" 
+                      className="flex-1" 
+                      size="sm"
+                      onClick={() => addToCart(book.id)}
+                    >
+                      <Icon name="ShoppingCart" className="w-4 h-4 mr-2" />
+                      {cart[book.id] ? `В корзине (${cart[book.id]})` : 'Купить'}
+                    </Button>
+                  </div>
                 </CardContent>
               </Card>
             ))}
@@ -361,6 +433,173 @@ const Index = () => {
                   <Icon name="FileText" className="w-4 h-4 mr-2" />
                   Полная биография
                 </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="py-16 bg-gradient-to-b from-background to-card/30">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h3 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+              Интернет-магазин
+            </h3>
+            <Separator className="w-24 mx-auto bg-primary" />
+            <p className="text-muted-foreground mt-4">
+              Все книги с автографом автора
+            </p>
+          </div>
+
+          <div className="max-w-6xl mx-auto">
+            <div className="grid lg:grid-cols-3 gap-8">
+              <div className="lg:col-span-2">
+                <div className="grid md:grid-cols-2 gap-6">
+                  {books.map((book) => (
+                    <Card 
+                      key={book.id}
+                      className="overflow-hidden hover:shadow-xl transition-all duration-300 border-primary/20"
+                    >
+                      <div className="h-48 bg-cover bg-center relative overflow-hidden group">
+                        <img 
+                          src={book.image} 
+                          alt={book.title}
+                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                        />
+                      </div>
+                      <CardContent className="p-5">
+                        <h4 className="font-bold text-lg mb-2 text-foreground leading-tight">{book.title}</h4>
+                        <p className="text-sm text-muted-foreground mb-3">{book.description}</p>
+                        <div className="flex items-center gap-3 mb-3 text-sm">
+                          <span className="flex items-center gap-1 text-muted-foreground">
+                            <Icon name="BookOpen" className="w-4 h-4" />
+                            {book.pages} стр.
+                          </span>
+                          <span className="flex items-center gap-1 text-muted-foreground">
+                            <Icon name="Calendar" className="w-4 h-4" />
+                            {book.year}
+                          </span>
+                        </div>
+                        <div className="flex items-center justify-between mb-4">
+                          <span className="text-2xl font-bold text-primary">{book.price} ₽</span>
+                          <span className="text-xs text-green-600 font-semibold">В наличии</span>
+                        </div>
+                        {cart[book.id] ? (
+                          <div className="flex items-center gap-2">
+                            <Button 
+                              variant="outline" 
+                              size="sm"
+                              onClick={() => removeFromCart(book.id)}
+                              className="flex-1"
+                            >
+                              <Icon name="Minus" className="w-4 h-4 mr-1" />
+                              Убрать
+                            </Button>
+                            <span className="px-4 py-2 bg-accent/10 rounded font-semibold">
+                              {cart[book.id]}
+                            </span>
+                            <Button 
+                              variant="outline" 
+                              size="sm"
+                              onClick={() => addToCart(book.id)}
+                              className="flex-1"
+                            >
+                              <Icon name="Plus" className="w-4 h-4 mr-1" />
+                              Добавить
+                            </Button>
+                          </div>
+                        ) : (
+                          <Button 
+                            variant="default" 
+                            className="w-full"
+                            onClick={() => addToCart(book.id)}
+                          >
+                            <Icon name="ShoppingCart" className="w-4 h-4 mr-2" />
+                            В корзину
+                          </Button>
+                        )}
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              </div>
+
+              <div className="lg:col-span-1">
+                <Card className="sticky top-24 border-2 border-primary/30">
+                  <CardContent className="p-6">
+                    <h4 className="text-xl font-bold mb-4 text-foreground">Корзина</h4>
+                    
+                    {getTotalItems() > 0 ? (
+                      <>
+                        <div className="space-y-3 mb-6">
+                          {Object.entries(cart).map(([bookId, quantity]) => {
+                            const book = books.find(b => b.id === bookId);
+                            if (!book) return null;
+                            return (
+                              <div key={bookId} className="flex justify-between items-start text-sm border-b border-border pb-3">
+                                <div className="flex-1">
+                                  <p className="font-semibold text-foreground">{book.title}</p>
+                                  <p className="text-muted-foreground text-xs">{quantity} × {book.price} ₽</p>
+                                </div>
+                                <p className="font-bold text-primary">{quantity * book.price} ₽</p>
+                              </div>
+                            );
+                          })}
+                        </div>
+                        
+                        <Separator className="my-4" />
+                        
+                        <div className="flex justify-between items-center mb-6">
+                          <span className="text-lg font-semibold">Итого:</span>
+                          <span className="text-2xl font-bold text-primary">{getTotalPrice()} ₽</span>
+                        </div>
+
+                        <div className="space-y-3">
+                          <Button className="w-full" size="lg">
+                            <Icon name="CreditCard" className="w-5 h-5 mr-2" />
+                            Оформить заказ
+                          </Button>
+                          <Button 
+                            variant="outline" 
+                            className="w-full"
+                            onClick={() => setCart({})}
+                          >
+                            <Icon name="Trash2" className="w-4 h-4 mr-2" />
+                            Очистить корзину
+                          </Button>
+                        </div>
+
+                        <div className="mt-6 p-4 bg-accent/10 rounded-lg">
+                          <div className="flex items-start gap-2">
+                            <Icon name="Gift" className="w-5 h-5 text-accent flex-shrink-0 mt-0.5" />
+                            <div>
+                              <p className="text-sm font-semibold text-foreground">Бесплатная доставка</p>
+                              <p className="text-xs text-muted-foreground">При заказе от 2000 ₽</p>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="mt-4 p-4 bg-secondary/10 rounded-lg">
+                          <div className="flex items-start gap-2">
+                            <Icon name="PenTool" className="w-5 h-5 text-secondary flex-shrink-0 mt-0.5" />
+                            <div>
+                              <p className="text-sm font-semibold text-foreground">С автографом</p>
+                              <p className="text-xs text-muted-foreground">Все книги подписаны автором</p>
+                            </div>
+                          </div>
+                        </div>
+                      </>
+                    ) : (
+                      <div className="text-center py-8">
+                        <Icon name="ShoppingCart" className="w-16 h-16 mx-auto text-muted-foreground/30 mb-4" />
+                        <p className="text-muted-foreground">Корзина пуста</p>
+                        <p className="text-sm text-muted-foreground/70 mt-2">
+                          Добавьте книги из каталога
+                        </p>
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
               </div>
             </div>
           </div>
