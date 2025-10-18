@@ -126,6 +126,57 @@ const Index = () => {
     }
   ];
 
+  const events = [
+    {
+      id: 1,
+      title: 'Презентация «Тайны Букингемского дворца»',
+      date: '2024-11-15',
+      time: '19:00',
+      location: 'Книжный клуб «Петербургские тайны»',
+      address: 'Невский проспект, 28',
+      city: 'Санкт-Петербург',
+      description: 'Встреча с читателями, презентация нового романа, автограф-сессия',
+      status: 'upcoming',
+      seats: 45
+    },
+    {
+      id: 2,
+      title: 'Литературный вечер «Шпионы викторианской эпохи»',
+      date: '2024-11-22',
+      time: '18:30',
+      location: 'Библиотека им. Достоевского',
+      address: 'ул. Рубинштейна, 15',
+      city: 'Санкт-Петербург',
+      description: 'Лекция об истории шпионажа XIX века, обсуждение романа',
+      status: 'upcoming',
+      seats: 60
+    },
+    {
+      id: 3,
+      title: 'Мастер-класс «Как создать исторический роман»',
+      date: '2024-12-05',
+      time: '16:00',
+      location: 'Литературный центр «Дом книги»',
+      address: 'Невский проспект, 62',
+      city: 'Санкт-Петербург',
+      description: 'Творческий мастер-класс для начинающих писателей',
+      status: 'upcoming',
+      seats: 30
+    },
+    {
+      id: 4,
+      title: 'Онлайн-встреча с читателями',
+      date: '2024-12-12',
+      time: '20:00',
+      location: 'Онлайн (Zoom)',
+      address: 'Ссылка будет выслана после регистрации',
+      city: 'Онлайн',
+      description: 'Вопросы и ответы, обсуждение будущих проектов',
+      status: 'upcoming',
+      seats: 100
+    }
+  ];
+
   const navItems = [
     { id: 'home', label: 'Главная', icon: 'Home' },
     { id: 'works', label: 'Произведения', icon: 'BookOpen' },
@@ -602,6 +653,114 @@ const Index = () => {
                 </Card>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="py-16 bg-card/20 vintage-pattern">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h3 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+              Встречи с читателями
+            </h3>
+            <Separator className="w-24 mx-auto bg-secondary" />
+            <p className="text-muted-foreground mt-4 max-w-2xl mx-auto">
+              Присоединяйтесь к литературным встречам, презентациям и мастер-классам
+            </p>
+          </div>
+
+          <div className="max-w-6xl mx-auto">
+            <div className="grid md:grid-cols-2 gap-6">
+              {events.map((event) => (
+                <Card 
+                  key={event.id}
+                  className="overflow-hidden hover:shadow-xl transition-all duration-300 border-l-4 border-l-secondary"
+                >
+                  <CardContent className="p-6">
+                    <div className="flex items-start justify-between mb-4">
+                      <div className="flex-1">
+                        <h4 className="font-bold text-lg mb-2 text-foreground leading-tight">
+                          {event.title}
+                        </h4>
+                        <div className="flex items-center gap-2 text-sm text-muted-foreground mb-1">
+                          <Icon name="MapPin" className="w-4 h-4 text-secondary" />
+                          <span className="font-semibold">{event.city}</span>
+                        </div>
+                      </div>
+                      <div className="flex-shrink-0 text-right">
+                        <div className="bg-secondary/10 rounded-lg p-3 border border-secondary/20">
+                          <div className="text-xs text-muted-foreground uppercase tracking-wide mb-1">
+                            {new Date(event.date).toLocaleDateString('ru-RU', { month: 'short' })}
+                          </div>
+                          <div className="text-2xl font-bold text-secondary">
+                            {new Date(event.date).getDate()}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="space-y-2 mb-4 text-sm">
+                      <div className="flex items-center gap-2 text-muted-foreground">
+                        <Icon name="Clock" className="w-4 h-4 text-secondary" />
+                        <span>{event.time}</span>
+                      </div>
+                      <div className="flex items-start gap-2 text-muted-foreground">
+                        <Icon name="Building" className="w-4 h-4 text-secondary flex-shrink-0 mt-0.5" />
+                        <div>
+                          <p className="font-semibold text-foreground">{event.location}</p>
+                          <p className="text-xs">{event.address}</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
+                      {event.description}
+                    </p>
+
+                    <Separator className="my-4" />
+
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2 text-sm">
+                        <Icon name="Users" className="w-4 h-4 text-muted-foreground" />
+                        <span className="text-muted-foreground">
+                          Осталось мест: <span className="font-semibold text-foreground">{event.seats}</span>
+                        </span>
+                      </div>
+                      <Button size="sm" variant="default">
+                        <Icon name="CheckCircle" className="w-4 h-4 mr-2" />
+                        Записаться
+                      </Button>
+                    </div>
+
+                    {event.city === 'Онлайн' && (
+                      <div className="mt-3 p-3 bg-accent/10 rounded-lg flex items-center gap-2">
+                        <Icon name="Video" className="w-4 h-4 text-accent" />
+                        <span className="text-xs text-muted-foreground">
+                          Онлайн-формат через Zoom
+                        </span>
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+
+            <Card className="mt-8 border-2 border-primary/20 bg-gradient-to-br from-card to-primary/5">
+              <CardContent className="p-8 text-center">
+                <Icon name="Mail" className="w-12 h-12 mx-auto text-primary mb-4" />
+                <h4 className="text-xl font-bold text-foreground mb-2">
+                  Хотите пригласить автора?
+                </h4>
+                <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
+                  Я с радостью приму участие в литературных фестивалях, книжных клубах 
+                  и образовательных мероприятиях. Свяжитесь со мной для обсуждения деталей.
+                </p>
+                <Button size="lg" variant="default">
+                  <Icon name="Send" className="w-5 h-5 mr-2" />
+                  Отправить приглашение
+                </Button>
+              </CardContent>
+            </Card>
           </div>
         </div>
       </section>
